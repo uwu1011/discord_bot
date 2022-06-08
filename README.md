@@ -1,3 +1,5 @@
 # DcBot_Tutorial
 
-### Hello
+### Hello !
+### Have fun with Discord Bot :)
+
