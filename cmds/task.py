@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 from discord.ext import tasks
-from core import Cog_Extension, jdata
+import os
+from core import Cog_Extension
 
 class Task(Cog_Extension):
 
@@ -14,7 +15,7 @@ class Task(Cog_Extension):
     async def peanuts(self):
 
         await self.bot.wait_until_ready()
-        self.channel = self.bot.get_channel(int(jdata["general_channel"]))
+        self.channel = self.bot.get_channel(int(os.getenv("general_channel")))
         await self.channel.send("Peanuts !")
     '''
 

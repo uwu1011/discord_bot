@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
-from core import jdata
-import json
 import os  
+from dotenv import load_dotenv
 
+load_dotenv()
 bot = commands.Bot(command_prefix ="$")
 
 @bot.event
@@ -31,4 +31,4 @@ async def unload(ctx, extension):
     await ctx.send(f'Unloaded')
 
 if  __name__ == "__main__":
-    bot.run(jdata['TOKEN'])
+    bot.run(os.getenv('TOKEN'))
