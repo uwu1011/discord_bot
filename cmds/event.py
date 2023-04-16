@@ -18,5 +18,5 @@ class Event(Cog_Extension):
             if msg.content.find(i) >= 0 and msg.author != self.bot.user:
                 await msg.channel.send('Never gonna give u up !')
 
-def setup(bot):
-    bot.add_cog(Event(bot))
+async def setup(bot):
+    await bot.add_cog(Event(bot))

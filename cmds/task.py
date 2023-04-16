@@ -19,5 +19,5 @@ class Task(Cog_Extension):
         await self.channel.send("Peanuts !")
     '''
 
-def setup(bot):
-    bot.add_cog(Task(bot))
+async def setup(bot):
+    await bot.add_cog(Task(bot))
