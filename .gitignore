@@ -8,3 +8,6 @@ cmds/__pycache__/
 # exe
 *.exe
 
+#song
+*.mp3
+

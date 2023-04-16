@@ -14,15 +14,14 @@ class Music(Cog_Extension):
         except PermissionError:
             await ctx.send("Wait for the current playing music to end or use the 'stop' command")
             return
-
+        
+        os.system(f"yt-dlp_x86.exe --extract-audio --audio-format mp3 --audio-quality 0 {url}")
         voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
 
         if voice is None:
             voiceChannel = discord.utils.get(ctx.guild.voice_channels, name='General')
             await voiceChannel.connect(timeout = 600.0)
             voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
-        
-        os.system(f"yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 {url}")
 
         for file in os.listdir("./"):
             if file.endswith(".mp3"):
