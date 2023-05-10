@@ -12,7 +12,7 @@ class Main(Cog_Extension):
     '''
     TODO
     Add the necessary bot commands here
-    You can consider using data.json to store some data such as url
+    Consider using data.json to store some data such as url
     '''
 
 async def setup(bot):
