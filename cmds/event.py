@@ -10,13 +10,10 @@ class Event(Cog_Extension):
         g_channel = self.bot.get_channel(int(os.getenv("general_channel")))
         await g_channel.send(f"歡迎{member}加入!")
 
-
-    @commands.Cog.listener()
-    async def on_message(self, msg):
-        List = ["Never","gonna","give","up"]
-        for i in List:
-            if msg.content.find(i) >= 0 and msg.author != self.bot.user:
-                await msg.channel.send('Never gonna give u up !')
-
+    '''
+    TODO (optional)
+    Add other events such as on_message, on_command_error
+    '''
+    
 async def setup(bot):
     await bot.add_cog(Event(bot))

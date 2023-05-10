@@ -15,6 +15,13 @@ class Music(Cog_Extension):
             await ctx.send("Wait for the current playing music to end or use the 'stop' command")
             return
         
+        '''
+        TODO (optional)
+        Allow users to seach for song by name
+        (Try adding a web crwaler or exploring the options of yt-dlp)
+        Reference : https://www.mankier.com/1/yt-dlp
+        '''
+
         os.system(f"yt-dlp_x86.exe --extract-audio --audio-format mp3 --audio-quality 0 {url}")
         voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
 
@@ -29,6 +36,10 @@ class Music(Cog_Extension):
     
         voice.play(discord.FFmpegPCMAudio(executable = 'ffmpeg.exe', source = "song.mp3"))
 
+    '''
+        TODO (optional)
+        Add other features such as queue, vote, etc.
+    '''
     
     @commands.command()
     async def leave(self,ctx):

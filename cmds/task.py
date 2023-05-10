@@ -6,18 +6,15 @@ from core import Cog_Extension
 
 class Task(Cog_Extension):
 
+    '''
+    TODO (optional)
+    Add tasks that would loop in background
+    Reference : 
+    https://discordpy.readthedocs.io/en/stable/ext/tasks/index.html?highlight=loop#discord.ext.tasks.loop 
+    '''
+
     def __init__(self,*args):
         super().__init__(*args)
-        #self.peanuts.start()
-
-    '''
-    @tasks.loop(seconds=20.0)
-    async def peanuts(self):
-
-        await self.bot.wait_until_ready()
-        self.channel = self.bot.get_channel(int(os.getenv("general_channel")))
-        await self.channel.send("Peanuts !")
-    '''
 
 async def setup(bot):
     await bot.add_cog(Task(bot))
