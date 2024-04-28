@@ -22,7 +22,7 @@ class Music(Cog_Extension):
         Reference : https://www.mankier.com/1/yt-dlp
         '''
 
-        os.system(f"yt-dlp_x86.exe --extract-audio --audio-format mp3 --audio-quality 0 {url}")
+        os.system(f"yt-dlp.exe --extract-audio --audio-format mp3 --audio-quality 0 {url}")
         voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
 
         if voice is None:
