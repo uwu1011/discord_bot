@@ -1,4 +1,4 @@
-# DCBot_Tutorial
+# discord_bot_tutorial
 ### Have fun with Discord Bot : )
 
 [Reference](https://hackmd.io/@Ev0n9YKlTzCKhedHrgZ2zw/Sy9ux3b_9)
