@@ -35,4 +35,4 @@ class Main(Cog_Extension):
 async def setup(bot):
     await bot.add_cog(Main(bot))
 
-print(12)
+print(11231232)
