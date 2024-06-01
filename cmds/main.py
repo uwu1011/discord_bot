@@ -9,11 +9,7 @@ class Main(Cog_Extension):
     async def Hello(self, ctx):
         await ctx.send("Hello, world")
     
-    @commands.command()
-    async def AddTodoList(self, ctx, item):
-        todo = []
-        todo.append(item)
-        await ctx.send("Successfully Added!")
+    
     '''
     TODO
     Add the necessary bot commands here
