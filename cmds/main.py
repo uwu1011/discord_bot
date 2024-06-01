@@ -12,15 +12,17 @@ class Main(Cog_Extension):
     
     
     @commands.command()
-    async def AddTodoList(self, ctx, item, todos):
+    async def AddTodoList(self, ctx, item):
         user_id = str(ctx.author.id)
+        global todos
         if user_id not in todos:
             todos[user_id] = []
         todos[user_id].append(item)
 
     @commands.command()
-    async def ListTodoList(self, ctx, todos):
+    async def ListTodoList(self, ctx):
         user_id = str(ctx.author.id)
+        global todos
         if user_id not in todos or not todos[user_id]:
             await ctx.send('You have no tasks in your to-do list.')
         else:
