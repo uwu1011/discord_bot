@@ -16,7 +16,6 @@ class Main(Cog_Extension):
         if user_id not in todos:
             todos[user_id] = []
         todos[user_id].append(item)
-        await ctx.send(f'Task added: {item}')
 
     @commands.command()
     async def ListTodoList(self, ctx, todos):
