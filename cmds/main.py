@@ -3,7 +3,7 @@ from discord.ext import commands
 import json 
 from core import Cog_Extension
 from function import isDateValid
-
+import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -30,7 +30,8 @@ class Main(Cog_Extension):
         elif result == 3:
             await ctx.send('Please type a valid day.')
         elif result == 4:
-            todos[user_id].append(item)
+            final = (item, date)
+            todos[user_id].append(final)
             await ctx.send(f'Successfully added: {item} {date}')
 
     @commands.command()
@@ -39,7 +40,9 @@ class Main(Cog_Extension):
         if user_id not in todos or not todos[user_id]:
             await ctx.send('You have no tasks in your to-do list.')
         else:
-            tasks = '\n'.join(f'{idx + 1}. {task}' for idx, task in enumerate(todos[user_id]))
+            time = todos[user_id][1]
+            time = int(time.strftime("%H/%M/%S",time))
+            tasks = '\n'.join(f'{idx + 1}. {task[0]} {task[1]}' for idx, task in enumerate(todos[user_id]))
             await ctx.send(f'Your to-do list:\n{tasks}')
 
     @commands.command()
