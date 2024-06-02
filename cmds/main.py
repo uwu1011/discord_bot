@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json 
 from core import Cog_Extension
+from function import isDateValid
 
 todos = {}
 class Main(Cog_Extension):
@@ -13,12 +14,20 @@ class Main(Cog_Extension):
     
     
     @commands.command()
-    async def AddTodoList(self, ctx, item):
+    async def AddTodoList(self, ctx, item, date):
         user_id = str(ctx.author.id)
         if user_id not in todos:
             todos[user_id] = []
-        todos[user_id].append(item)
-        await ctx.send(f'Successfully added: {item}')
+        result = isDateValid(date)
+        if result == 1:
+            await ctx.send('Please correctly type your date in the format of {YYYY/MM/DD}.')
+        elif result == 2:
+            await ctx.send('Please type a valid month.')
+        elif result == 3:
+            await ctx.send('Please type a valid day.')
+        elif result == 4:
+            todos[user_id].append(item)
+            await ctx.send(f'Successfully added: {item} {date}')
 
     @commands.command()
     async def ShowTodoList(self, ctx):
