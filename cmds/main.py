@@ -72,20 +72,31 @@ class Main(Cog_Extension):
         url = "https://www.nba.com/schedule"
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
-        games_section = soup.find_all("div", class_="ScheduleGame_game__jDeQQ")
         
+        # Find the section containing the games
+        games_section = soup.find_all("div", class_="ScheduleDay_gameWrapper__FnoN3")
+
         if not games_section:
             await ctx.send("找不到比賽資訊。")
             return
 
         games_info = []
-        for game in games_section[:5]:
-            teams = game.find_all("span", class_="TeamMatchup_teamName__ZvI_J")
-            time = game.find("div", class_="ScheduleGame_startTime__T5EJD")
-            team1 = teams[0].text.strip()
-            team2 = teams[1].text.strip()
-            game_time = time.text.strip()
-            games_info.append(f"{team1} vs {team2} at {game_time}")
+        count = 0
+        for day in games_section:
+            games = day.find_all("div", class_="Card_gameCard__nlHpI")
+            for game in games:
+                if count >= 5:
+                    break
+                teams = game.find_all("span", class_="MatchupCard_teamName__Z6ADd")
+                time = game.find("span", class_="MatchupCard_gameTime__jbFiL")
+                if teams and time:
+                    team1 = teams[0].text.strip()
+                    team2 = teams[1].text.strip()
+                    game_time = time.text.strip()
+                    games_info.append(f"{team1} vs {team2} at {game_time}")
+                    count += 1
+            if count >= 5:
+                break
 
         await ctx.send("\n".join(games_info))
 
