@@ -40,9 +40,9 @@ class Main(Cog_Extension):
         if user_id not in todos or not todos[user_id]:
             await ctx.send('You have no tasks in your to-do list.')
         else:
-            time = todos[user_id][1]
-            time = int(time.strftime("%H/%M/%S",time))
-            tasks = '\n'.join(f'{idx + 1}. {task[0]} {task[1]}' for idx, task in enumerate(todos[user_id]))
+            works = todos[user_id]
+            works.sort(key=lambda x:int(x[1].replace("/","")))
+            tasks = '\n'.join(f'{idx + 1}. {task[0]} {task[1]}' for idx, task in enumerate(works))
             await ctx.send(f'Your to-do list:\n{tasks}')
 
     @commands.command()
