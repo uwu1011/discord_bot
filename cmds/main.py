@@ -35,33 +35,49 @@ class Main(Cog_Extension):
         elif result == 4:
             final = (item, date)
             todos[user_id].append(final)
-            await ctx.send(f'Successfully added: {item} {date}')
+            embed=discord.Embed(title=f'Successfully added: {item} {date}', color=0x2effe7)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
 
     @commands.command()
     async def ShowTodoList(self, ctx):
         user_id = str(ctx.author.id)
         if user_id not in todos or not todos[user_id]:
-            await ctx.send('You have no tasks in your to-do list.')
+            embed=discord.Embed(title='You have no tasks in your to-do list.', color=0x2effe7)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
         else:
-            time = todos[user_id][1]
-            time = int(time.strftime("%H/%M/%S",time))
-            tasks = '\n'.join(f'{idx + 1}. {task[0]} {task[1]}' for idx, task in enumerate(todos[user_id]))
-            await ctx.send(f'Your to-do list:\n{tasks}')
+            works = todos[user_id]
+            works.sort(key=lambda x:int(x[1].replace("/","")))
+            embed=discord.Embed(title="Your to-do list:", description="sorted by date", color=0x2effe7)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+            for idx, tasks in enumerate(works):
+                embed.add_field(name=str(idx + 1) + ". " + tasks[0] + " " + tasks[1], value="", inline=False)
+            await ctx.send(embed=embed)
 
     @commands.command()
     async def ClearTodoList(self, ctx):
         user_id = str(ctx.author.id)
         todos[user_id] = []
-        await ctx.send("Todo list cleared!")
+        embed=discord.Embed(title="Todo list cleared!", color=0x2effe7)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
 
     @commands.command()
-    async def RemoveTodoList(self, ctx, item):
+    async def RemoveTodoList(self, ctx, item, date):
         user_id = str(ctx.author.id)
         try:
-            todos[user_id].remove(item)
-            await ctx.send(f"{item} cleared!")
+            whole = (item, date)
+            todos[user_id].remove(whole)
+            embed=discord.Embed(title=(f"{item} {date} cleared!"), color=0x2effe7)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
         except:
-            await ctx.send(f"{item} is not in todo list.")
+            embed=discord.Embed(title=f"Please type in the date or {item} is not in todo list.", color=0x2effe7)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
+        
+        
         
     '''
     TODO
