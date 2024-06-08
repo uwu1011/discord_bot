@@ -30,4 +30,4 @@ async def unload(ctx, extension):
     await ctx.send(f'Unloaded')
 
 if  __name__ == "__main__":
-    bot.run()
+    bot.run('MTI0MzE4OTM4MTA3NDkxNTMyOA.G9vPLh.NQuoDbKyjVrha0_rYtNxy-5-R2SDgwWnjjOh88')
