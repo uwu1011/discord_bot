@@ -30,4 +30,4 @@ async def unload(ctx, extension):
     await ctx.send(f'Unloaded')
 
 if  __name__ == "__main__":
-    bot.run(os.getenv('TOKEN'))
+    bot.run()

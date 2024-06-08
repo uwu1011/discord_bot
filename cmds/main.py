@@ -7,6 +7,9 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+class Main(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
 todos = {}
 class Main(Cog_Extension):
