@@ -1,10 +1,10 @@
 def isDateValid(date):
     date_list = date.split("/")
-    if len(date_list) != 3 or not((date_list[0] and date_list[1] and date_list[2]).isdigit()):
-        return 1
     year = int(date_list[0])
     month = int(date_list[1].lstrip("0"))
     day = int(date_list[2].lstrip("0"))
+    if len(date_list) != 3 or not((str(year) and str(month) and str(day)).isdigit()):
+        return 1
     if len(date_list[1]) != 2 or len(date_list[0]) != 2:
         return 1
     else:
