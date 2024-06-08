@@ -78,6 +78,8 @@ class Main(Cog_Extension):
         embed=discord.Embed(title=text, color=0x2effe7)
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
+
+    
         
         
         
