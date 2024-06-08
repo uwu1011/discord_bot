@@ -5,7 +5,7 @@ def isDateValid(date):
     day = int(date_list[2].lstrip("0"))
     if len(date_list) != 3 or not((str(year) and str(month) and str(day)).isdigit()):
         return 1
-    if len(date_list[1]) != 2 or len(date_list[0]) != 2:
+    if len(date_list[1]) != 2 or len(date_list[2]) != 2:
         return 1
     else:
         if month == 0 or month > 12:

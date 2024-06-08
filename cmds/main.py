@@ -23,21 +23,23 @@ class Main(Cog_Extension):
     @commands.command()
     async def AddTodoList(self, ctx, item, date):
         user_id = str(ctx.author.id)
+        text = ""
         if user_id not in todos:
             todos[user_id] = []
         result = isDateValid(date)
         if result == 1:
-            await ctx.send('Please correctly type your date in the format of {YYYY/MM/DD}.')
+            text = 'Please correctly type your date in the format of {YYYY/MM/DD}.'
         elif result == 2:
-            await ctx.send('Please type a valid month.')
+            text = "Please type a valid month."
         elif result == 3:
-            await ctx.send('Please type a valid day.')
+            text = "Please type a valid day."
         elif result == 4:
             final = (item, date)
             todos[user_id].append(final)
-            embed=discord.Embed(title=f'Successfully added: {item} {date}', color=0x2effe7)
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
-            await ctx.send(embed=embed)
+            text = (f'Successfully added: {item} {date}')
+        embed=discord.Embed(title=text, color=0x2effe7)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def ShowTodoList(self, ctx):
@@ -66,16 +68,16 @@ class Main(Cog_Extension):
     @commands.command()
     async def RemoveTodoList(self, ctx, item, date):
         user_id = str(ctx.author.id)
+        text = ""
         try:
             whole = (item, date)
             todos[user_id].remove(whole)
-            embed=discord.Embed(title=(f"{item} {date} cleared!"), color=0x2effe7)
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
-            await ctx.send(embed=embed)
+            text = (f"{item} {date} cleared!")
         except:
-            embed=discord.Embed(title=f"Please type in the date or {item} is not in todo list.", color=0x2effe7)
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
-            await ctx.send(embed=embed)
+            text = (f"Please type in the date or {item} is not in todo list.")
+        embed=discord.Embed(title=text, color=0x2effe7)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
         
         
         
