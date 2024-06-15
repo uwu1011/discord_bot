@@ -35,3 +35,20 @@ def isDateValid(date):
                     return 3
                 else:
                     return 4
+                
+def guess_word(guess, solution):
+    feedback = ["#"] * 5
+    solution_copy = list(solution)
+
+    for i in range(5):
+        if guess[i] == solution[i]:
+            feedback[i] = guess[i].upper()
+            solution_copy[i] = None
+
+    for i in range(5):
+        if feedback[i] == "#":
+            if guess[i] in solution_copy:
+                feedback[i] = guess[i].lower()
+                solution_copy[solution_copy.index(guess[i])] = None
+
+    return "".join(feedback)

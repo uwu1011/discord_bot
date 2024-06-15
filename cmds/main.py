@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json 
 from core import Cog_Extension
-from function import isDateValid
+from function import isDateValid, guess_word
 import time
 import random
 import requests as rq
@@ -13,6 +13,7 @@ class Main(commands.Cog):
         self.bot = bot
 
 todos = {}
+wordle = {}
 response = rq.get("https://www.wordunscrambler.net/word-list/wordle-word-list")
 raw = response.text
 doc = BeautifulSoup(raw, "html.parser")
@@ -21,11 +22,9 @@ word_list = [a.text for a in words]
 
 class Main(Cog_Extension):
 
-    todos = {}
     @commands.command()
     async def Hello(self, ctx):
         await ctx.send("Hello, world")
-    
     
     @commands.command()
     async def AddTodoList(self, ctx, item, date):
@@ -89,11 +88,43 @@ class Main(Cog_Extension):
     @commands.command()
     async def Play(self, ctx):
         random.shuffle(word_list)
-        await ctx.send(word_list[0])
-        
-        
-        
-        
+        word = word_list[0]
+        user_id = str(ctx.author.id)
+        wordle[user_id] = [word,6]
+        print(wordle[user_id])
+        embed=discord.Embed(title="Start Playing", color=0x2effe7)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def Ask(self, ctx, guess):
+        user_id = str(ctx.author.id)
+        guess = guess.lower()
+        text = ""
+        if user_id not in wordle:
+            text = "Please use the \"$Play\" command first."
+        else:
+            if guess.encode("utf-8").isalpha() == False:
+                text = "Please type a valid word."
+            elif len(guess) != 5:
+                text = "Please type a 5-letter word."
+            elif guess not in word_list:
+                text = "The word is not in word list."
+            else:
+                word = wordle[user_id][0]
+                wordle[user_id][1] -= 1
+                text = guess_word(guess, word)
+                if guess == word:
+                    del wordle[user_id]
+                    text = f"You guessed it right! Congrats! The word was {word}."
+                elif wordle[user_id][1] == 0:
+                    del wordle[user_id]
+                    text = f"You didn't get the word :( The correct word was {word}."
+            
+        embed=discord.Embed(title=text, color=0x2effe7)
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+
     '''
     TODO
     Add the necessary bot commands here
