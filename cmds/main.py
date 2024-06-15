@@ -107,7 +107,7 @@ class Main(Cog_Extension):
     @commands.command()
     async def cominggames(self, ctx):
         url = "https://www.nba.com/schedule"
-        response = requests.get(url)
+        response = rq.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
         
         # Find the section containing the games
@@ -140,7 +140,7 @@ class Main(Cog_Extension):
     @commands.command()
     async def news(self, ctx):
         url = "https://www.nba.com/news"
-        response = requests.get(url)
+        response = rq.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
         news_section = soup.find_all("div", class_="ArticleCard_articleCard__hCOE6")
         
@@ -159,7 +159,7 @@ class Main(Cog_Extension):
     @commands.command()
     async def stats(self, ctx):
         url = "https://www.nba.com/stats"
-        response = requests.get(url)
+        response = rq.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
         categories = ["points", "rebounds", "assists", "steals", "blocks"]
         stats_info = []
