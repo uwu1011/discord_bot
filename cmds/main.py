@@ -4,7 +4,8 @@ import json
 from core import Cog_Extension
 from function import isDateValid
 import time
-import requests
+import random
+import requests as rq
 from bs4 import BeautifulSoup
 
 class Main(commands.Cog):
@@ -12,6 +13,12 @@ class Main(commands.Cog):
         self.bot = bot
 
 todos = {}
+response = rq.get("https://www.wordunscrambler.net/word-list/wordle-word-list")
+raw = response.text
+doc = BeautifulSoup(raw, "html.parser")
+words = doc.select('h3.list-header + ul a')
+word_list = [a.text for a in words]
+
 class Main(Cog_Extension):
 
     todos = {}
@@ -79,7 +86,11 @@ class Main(Cog_Extension):
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
-    
+    @commands.command()
+    async def Play(self, ctx):
+        random.shuffle(word_list)
+        await ctx.send(word_list[0])
+        
         
         
         
