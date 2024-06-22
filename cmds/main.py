@@ -131,82 +131,65 @@ class Main(Cog_Extension):
     Consider using data.json to store some data such as url
     '''
 
-    @commands.command()
-    async def nba(self, ctx):
-        await ctx.send("今天需要什麼關於nba的資訊?")
+
+# Load data from data.json
+    with open('data.json') as f:
+        data = json.load(f)
 
     @commands.command()
-    async def cominggames(self, ctx):
-        url = "https://www.nba.com/schedule"
+    async def nba(ctx):
+        await ctx.send('今天需要什麼關於nba的資訊?')
+
+    @commands.command()
+    async def cominggames(ctx):
+        url = 'https://www.nba.com/schedule'
         response = rq.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
-        
-        # Find the section containing the games
-        games_section = soup.find_all("div", class_="ScheduleDay_gameWrapper__FnoN3")
-
-        if not games_section:
-            await ctx.send("找不到比賽資訊。")
-            return
-
-        games_info = []
-        count = 0
-        for day in games_section:
-            games = day.find_all("div", class_="Card_gameCard__nlHpI")
-            for game in games:
-                if count >= 5:
-                    break
-                teams = game.find_all("span", class_="MatchupCard_teamName__Z6ADd")
-                time = game.find("span", class_="MatchupCard_gameTime__jbFiL")
-                if teams and time:
-                    team1 = teams[0].text.strip()
-                    team2 = teams[1].text.strip()
-                    game_time = time.text.strip()
-                    games_info.append(f"{team1} vs {team2} at {game_time}")
-                    count += 1
-            if count >= 5:
-                break
-
-        await ctx.send("\n".join(games_info))
+        soup = BeautifulSoup(response.text, 'html.parser')
+        games = soup.find_all('div', {'class': 'game'})
+        coming_games = []
+        for game in games[:5]:
+            teams = game.find_all('span', {'class': 'team'})
+            team1 = teams[0].text
+            team2 = teams[1].text
+            time = game.find('span', {'class': 'time'}).text
+            coming_games.append(f'{team1} vs {team2} {time}')
+        await ctx.send('\n'.join(coming_games))
 
     @commands.command()
-    async def news(self, ctx):
-        url = "https://www.nba.com/news"
+    async def news(ctx):
+        url = 'https://www.nba.com/news'
         response = rq.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
-        news_section = soup.find_all("div", class_="ArticleCard_articleCard__hCOE6")
-        
-        if not news_section:
-            await ctx.send("找不到新聞資訊。")
-            return
-
-        news_info = []
-        for news in news_section[:5]:
-            title = news.find("h2", class_="ArticleCard_title__ZnK9q").text.strip()
-            link = news.find("a", href=True)["href"]
-            news_info.append(f"{title} - https://www.nba.com{link}")
-
-        await ctx.send("\n".join(news_info))
+        soup = BeautifulSoup(response.text, 'html.parser')
+        articles = soup.find_all('article')
+        news = []
+        for article in articles[:5]:
+            title = article.find('h4', {'class': 'title'}).text
+            link = article.find('a')['href']
+            news.append(f'{title} {link}')
+        await ctx.send('\n'.join(news))
 
     @commands.command()
-    async def stats(self, ctx):
+    async def stats(ctx):
         url = "https://www.nba.com/stats"
         response = rq.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
-        categories = ["points", "rebounds", "assists", "steals", "blocks"]
-        stats_info = []
-
-        for category in categories:
-            section = soup.find("a", href=f"/stats/players/{category}/")
-            if section:
-                leader = section.find("p", class_="LeaderBoardPlayer_playerName__kB48U").text.strip()
-                value = section.find("p", class_="LeaderBoardPlayer_playerValue__ZW09H").text.strip()
-                stats_info.append(f"{category.capitalize()}: {leader} - {value}")
-
-        if not stats_info:
-            await ctx.send("找不到統計數據。")
-            return
-
-        await ctx.send("\n".join(stats_info))
+        soup = BeautifulSoup(response.text, 'html.parser')
+        stats = soup.find_all('div', {'class': 'tats'})
+        leaders = {}
+        for stat in stats:
+            category = stat.find('h4', {'class': 'category'}).text
+            players = stat.find_all('tr')
+            leaders[category] = []
+            for player in players[:3]:
+                name = player.find('td', {'class': 'player'}).text
+                value = player.find('td', {'class': 'value'}).text
+                leaders[category].append(f'{name} {value}')
+        output = ''
+        for category, players in leaders.items():
+            output += f'{category}:\n'
+            for player in players:
+                output += f'{player}\n'
+            output += '\n'
+        await ctx.send(output)
 
 async def setup(bot):
     await bot.add_cog(Main(bot))

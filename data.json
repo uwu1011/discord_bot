@@ -1,3 +1,5 @@
 {
-    
+    "schedule_url": "https://www.nba.com/schedule",
+    "news_url": "https://www.nba.com/news",
+    "stats_url": "https://www.nba.com/stats"
 }
